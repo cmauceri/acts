@@ -11,7 +11,7 @@
 #include "ActsExamples/Vertexing/IterativeVertexFinderAlgorithm.hpp"
 #include "ActsExamples/Vertexing/TutorialVertexFinderAlgorithm.hpp"
 #include "ActsExamples/Vertexing/VertexFitterAlgorithm.hpp"
-
+#include "ActsExamples/Vertexing/PrimaryVertexFinderAlgorithm.hpp"
 #include <memory>
 
 #include <pybind11/pybind11.h>
@@ -42,6 +42,10 @@ void addVertexing(Context& ctx) {
                                 mex, "TutorialVertexFinderAlgorithm",
                                 inputTrackParameters, inputTrajectories,
                                 outputProtoVertices, bField);
+
+  ACTS_PYTHON_DECLARE_ALGORITHM(ActsExamples::PrimaryVertexFinderAlgorithm,
+                                mex, "PrimaryVertexFinderAlgorithm",
+                                inputVertices);
 
   ACTS_PYTHON_DECLARE_ALGORITHM(
       ActsExamples::VertexFitterAlgorithm, mex, "VertexFitterAlgorithm",
