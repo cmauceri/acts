@@ -74,14 +74,35 @@ ActsExamples::ProcessCode ActsExamples::PrimaryVertexFinderAlgorithm::execute(
     const auto& vertices = m_inputVertices(ctx);
 
     std::cout<<"Total number of Vertices: " << vertices.size()<<std::endl;
-    
+    int size=vertices.size();
+    std::vector<double> vtxPts(size);
+    int i=0;
+    Acts::Vertex* p_vtx = nullptr;
     for (auto& vtx :  vertices) {
-      std::cout<<"printing vertex location and time"<<std::endl;
-      std::cout<<vtx.position()<<std::endl;
-      std::cout<<vtx.time()<<std::endl;
-    }  
+      //      std::cout<<"printing vertex location and time"<<std::endl;
+      //      std::cout<<vtx.position()<<std::endl;
+      //      std::cout<<vtx.time()<<std::endl;
+      double pt2 = 0;
 
-  } // vertex container initialized
+      auto& tracks=vtx.tracks();
+      for (auto& track: tracks) {
+	pt2 = pt2+(track.fittedParams.transverseMomentum())*(track.fittedParams.transverseMomentum());
+      }
+      vtxPts[p_vtx]=pt2;
+    }
+    int count=0;
+    for (i=1; i<=size; i++){
+      if(vtxPts[i]>vtxPts[i-1]){
+	count=i;
+	p_vtx=i;
+      }
+    }
+    std::cout<<"Maximum pt squared: " <<vtxPts[count];
+    return vertices[p_vtx];
+    //    return vertices[i];
+  
+  }
+ // vertex container initialized
 
     ///////////////////////////////////////////////
   /*     Add the tutorial example code here    */
