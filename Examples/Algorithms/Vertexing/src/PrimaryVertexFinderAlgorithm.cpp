@@ -35,7 +35,7 @@ ActsExamples::PrimaryVertexFinderAlgorithm::PrimaryVertexFinderAlgorithm(
   // }
   
 
-  //m_inputTrackParameters.maybeInitialize(m_cfg.inputTrackParameters);
+
   //m_inputTrajectories.maybeInitialize(m_cfg.inputTrajectories);
   // Adapt previous line to get vertices
   m_inputVertices.maybeInitialize(m_cfg.inputVertices);
