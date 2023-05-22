@@ -8,7 +8,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "ActsExamples/Vertexing/PrimaryVertexFinderAlgorithm.hpp"
-
+#include "ActsExamples/EventData/SimParticle.hpp"
 #include "Acts/Definitions/Units.hpp"
 #include "Acts/MagneticField/MagneticFieldContext.hpp"
 #include "Acts/Propagator/EigenStepper.hpp"
@@ -39,6 +39,8 @@ ActsExamples::PrimaryVertexFinderAlgorithm::PrimaryVertexFinderAlgorithm(
   //m_inputTrajectories.maybeInitialize(m_cfg.inputTrajectories);
   // Adapt previous line to get vertices
   m_inputVertices.maybeInitialize(m_cfg.inputVertices);
+  m_inputTrackParameters.maybeInitialize(m_cfg.inputTrackParameters);
+  m_inputSelectedTruthParticles.maybeInitialize(m_cfg.inputSelectedTruthParticles);
 }
 
 ActsExamples::ProcessCode ActsExamples::PrimaryVertexFinderAlgorithm::execute(
@@ -53,21 +55,6 @@ ActsExamples::ProcessCode ActsExamples::PrimaryVertexFinderAlgorithm::execute(
   // vtx location, 
   //so i need to check how to get the vertex object information from the vertex class that
   //is in Core/include/Acts/Vertexing/Vertex
-  /*Sketch:
-    Create Vtx object??
-
-    Get Vertex   Vertex()
-    Get Tracks at vertex
-    
-    For Vertex:
-        For Track: 
-	    Get pt^2
-	   sumpt^2 =pt^2++
-	write sumpt^2 to array?
-	Get max from array?
-	   Need to find memory position of max to find which vtx it is
-     return vtx  
-  */
   
   if (m_inputVertices.isInitialized()) {
     
@@ -76,46 +63,56 @@ ActsExamples::ProcessCode ActsExamples::PrimaryVertexFinderAlgorithm::execute(
     std::cout<<"Total number of Vertices: " << vertices.size()<<std::endl;
     int size=vertices.size();
     std::vector<double> vtxPts(size);
-    int i=0;
+   
     
     int j = 0;
-    for (auto& vtx :  vertices) {
       // Looping through vertices
-      double pt2 = 0;
+    for (auto& vtx :  vertices) {
       // initializing pt^2
-      auto& tracks=vtx.tracks();
+      double pt2 = 0;
       // initializing vtx associated tracks
-      for (auto& track: tracks) {
+      auto& tracks=vtx.tracks();
 	// Looping through tracks
-	pt2 = pt2+(track.fittedParams.transverseMomentum())*(track.fittedParams.transverseMomentum());
+      for (auto& track: tracks) {
 	// Calculating sum (pt^2)
+	pt2 = pt2+(track.fittedParams.transverseMomentum())*(track.fittedParams.transverseMomentum());
       }
-      vtxPts.at(j)=pt2;
       // Storing sum(pt^2) for each vertex
-      j++;
+      vtxPts.at(j)=pt2;
       // Increasing vertex index
+      j++;
     }
  
     
-    int p_vtx=0;
     //initializing primary vertex index
-    for (i=1; i<=size; i++){
+    int p_vtx=0;
       // Loop through Pt^2 
+    for (int i=0; i<size; i++){
       std::cout<<"Vtx "<<i<<"Pt^2: "<<(vtxPts[i])<<std::endl;
       if(vtxPts[i]>vtxPts[i-1]){
-	p_vtx=i;
 	// updates primary vertex index
+	p_vtx=i;
       }
     }
     std::cout<<"Maximum pt squared: " <<vtxPts[p_vtx]<<std::endl;
     const auto& primVtx = vertices.at(p_vtx);
-    //primVtx=vertices[p_vtx];
     std::cout<<"Primary Vertex location: "<<std::endl;
     std::cout<<primVtx.position()<<std::endl;
     
 
+  
+    Acts::Vertex* PrimaryVertexFinderAlgorithm::matchVtx(m_inputTrackParameters,m_inputSelectedTruthParticles,m_inputVertices){
+
+    if(m_inputTrackParameters.IsInitialized()&&m_inputSelectedTruthParticles.IsInitialized()){
+      const auto& inputTrackParameters = m_inputTrackParameters(ctx);
+      const auto& inputSelectedTruthParticles=m_SelectedTruthParticles(ctx);
+      std::cout<<"Vtx vector size: "<<vtx.size()<<std::endl;
+      std::cout<<"TrackParameter size: "<<inputTrackParameters.size()<<std::endl;  
+      std::cout<<"Truth Particles size: "<<inputSelectedTruthParticles.size()<<std::endl;
+
+    }
   }
- 
+}
  // vertex container initialized
 
     ///////////////////////////////////////////////
