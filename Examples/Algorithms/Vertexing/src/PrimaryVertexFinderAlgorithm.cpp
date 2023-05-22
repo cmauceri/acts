@@ -77,31 +77,45 @@ ActsExamples::ProcessCode ActsExamples::PrimaryVertexFinderAlgorithm::execute(
     int size=vertices.size();
     std::vector<double> vtxPts(size);
     int i=0;
-    Acts::Vertex* p_vtx = nullptr;
+    
+    int j = 0;
     for (auto& vtx :  vertices) {
-      //      std::cout<<"printing vertex location and time"<<std::endl;
-      //      std::cout<<vtx.position()<<std::endl;
-      //      std::cout<<vtx.time()<<std::endl;
+      // Looping through vertices
       double pt2 = 0;
-
+      // initializing pt^2
       auto& tracks=vtx.tracks();
+      // initializing vtx associated tracks
       for (auto& track: tracks) {
+	// Looping through tracks
 	pt2 = pt2+(track.fittedParams.transverseMomentum())*(track.fittedParams.transverseMomentum());
+	// Calculating sum (pt^2)
       }
-      vtxPts[p_vtx]=pt2;
+      vtxPts.at(j)=pt2;
+      // Storing sum(pt^2) for each vertex
+      j++;
+      // Increasing vertex index
     }
-    int count=0;
+ 
+    
+    int p_vtx=0;
+    //initializing primary vertex index
     for (i=1; i<=size; i++){
+      // Loop through Pt^2 
+      std::cout<<"Vtx "<<i<<"Pt^2: "<<(vtxPts[i])<<std::endl;
       if(vtxPts[i]>vtxPts[i-1]){
-	count=i;
 	p_vtx=i;
+	// updates primary vertex index
       }
     }
-    std::cout<<"Maximum pt squared: " <<vtxPts[count];
-    return vertices[p_vtx];
-    //    return vertices[i];
-  
+    std::cout<<"Maximum pt squared: " <<vtxPts[p_vtx]<<std::endl;
+    const auto& primVtx = vertices.at(p_vtx);
+    //primVtx=vertices[p_vtx];
+    std::cout<<"Primary Vertex location: "<<std::endl;
+    std::cout<<primVtx.position()<<std::endl;
+    
+
   }
+ 
  // vertex container initialized
 
     ///////////////////////////////////////////////
