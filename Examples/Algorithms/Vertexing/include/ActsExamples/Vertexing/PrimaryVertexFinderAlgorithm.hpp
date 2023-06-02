@@ -25,16 +25,16 @@ namespace ActsExamples {
 
 using VerticesContainer = 
   std::vector<Acts::Vertex<Acts::BoundTrackParameters>>;
-using SimParticleContainer = 
-  std::vector<Acts::SimParticle<ActsExamples::detail::ActsExamples::SimParticleContainer>>;
-using TrackParametersContainer=
-  std::vector<Acts::TrackParameters<Acts::BoundTrackParameters>>;
+  //using SimParticleContainer = 
+  //std::vector<Acts::SimParticle<ActsExamples::detail::ActsExamples::SimParticleContainer>>;
+  //using TrackParametersContainer=
+  //std::vector<Acts::TrackParameters<Acts::BoundTrackParameters>>;
 class PrimaryVertexFinderAlgorithm final : public IAlgorithm {
  public:
   struct Config {
     /// Optional. Input track parameters collection
-    std::string inputTrackParameters;
-    std::string inputSelectedTruthParticles;    
+    //std::string inputTrackParameters;
+    //std::string inputSelectedTruthParticles;    
 /// Optional. Input trajectories container.
     //std::string inputTrajectories;
     /// Output proto vertex collection
@@ -62,17 +62,17 @@ class PrimaryVertexFinderAlgorithm final : public IAlgorithm {
  private:
   Config m_cfg;
 
-  ReadDataHandle<TrajectoriesContainer> m_inputTrajectories{
-      this, "InputTrajectories"};
+  //ReadDataHandle<TrajectoriesContainer> m_inputTrajectories{
+  //  this, "InputTrajectories"};
   //Need ReadDataHandle for the vertices
   ReadDataHandle<VerticesContainer> m_inputVertices{
     this, "inputVertices"};
-  ReadDataHandle<SimParticleContainer> m_inputSelectedTruthParticles{
-    this, "inputSelectedTruthParticles"};
-  ReadDataHandle<std::vector<Acts::BoundTrackParameters>>
-    m_inputTrackParameters{this, "InputTrackParameters"};
+  //ReadDataHandle<SimParticleContainer> m_inputSelectedTruthParticles{
+  //this, "inputSelectedTruthParticles"};
+  // ReadDataHandle<std::vector<Acts::BoundTrackParameters>>
+  //m_inputTrackParameters{this, "InputTrackParameters"};
 
-  Acts::Vertex* PrimaryVertexFinderAlgorithm::matchVtx<TrackParametersContainer, SimParticleContainer, VerticesContainer>;
+  //Acts::Vertex* PrimaryVertexFinderAlgorithm::matchVtx<TrackParametersContainer, SimParticleContainer, VerticesContainer>;
 };
 
 } // namespace ActsExamples

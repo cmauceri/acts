@@ -39,8 +39,8 @@ ActsExamples::PrimaryVertexFinderAlgorithm::PrimaryVertexFinderAlgorithm(
   //m_inputTrajectories.maybeInitialize(m_cfg.inputTrajectories);
   // Adapt previous line to get vertices
   m_inputVertices.maybeInitialize(m_cfg.inputVertices);
-  m_inputTrackParameters.maybeInitialize(m_cfg.inputTrackParameters);
-  m_inputSelectedTruthParticles.maybeInitialize(m_cfg.inputSelectedTruthParticles);
+  //  m_inputTrackParameters.maybeInitialize(m_cfg.inputTrackParameters);
+  //  m_inputSelectedTruthParticles.maybeInitialize(m_cfg.inputSelectedTruthParticles);
 }
 
 ActsExamples::ProcessCode ActsExamples::PrimaryVertexFinderAlgorithm::execute(
@@ -101,18 +101,17 @@ ActsExamples::ProcessCode ActsExamples::PrimaryVertexFinderAlgorithm::execute(
     
 
   
-    Acts::Vertex* PrimaryVertexFinderAlgorithm::matchVtx(m_inputTrackParameters,m_inputSelectedTruthParticles,m_inputVertices){
+    //Acts::Vertex* PrimaryVertexFinderAlgorithm::matchVtx(m_inputTrackParameters,m_inputSelectedTruthParticles,m_inputVertices){
 
-    if(m_inputTrackParameters.IsInitialized()&&m_inputSelectedTruthParticles.IsInitialized()){
-      const auto& inputTrackParameters = m_inputTrackParameters(ctx);
-      const auto& inputSelectedTruthParticles=m_SelectedTruthParticles(ctx);
-      std::cout<<"Vtx vector size: "<<vtx.size()<<std::endl;
-      std::cout<<"TrackParameter size: "<<inputTrackParameters.size()<<std::endl;  
-      std::cout<<"Truth Particles size: "<<inputSelectedTruthParticles.size()<<std::endl;
+	  //  if(m_inputTrackParameters.IsInitialized()&&m_inputSelectedTruthParticles.IsInitialized()){
+	  //const auto& inputTrackParameters = m_inputTrackParameters(ctx);
+	  // const auto& inputSelectedTruthParticles=m_SelectedTruthParticles(ctx);
+	  // std::cout<<"Vtx vector size: "<<vtx.size()<<std::endl;
+	  //std::cout<<"TrackParameter size: "<<inputTrackParameters.size()<<std::endl;  
+      //      std::cout<<"Truth Particles size: "<<inputSelectedTruthParticles.size()<<std::endl;
 
-    }
   }
-}
+
  // vertex container initialized
 
     ///////////////////////////////////////////////

@@ -114,6 +114,8 @@ ActsExamples::VertexPerformanceWriter::VertexPerformanceWriter(
     m_outputTree->Branch("nVtxDetectorAcceptance", &m_nVtxDetAcceptance);
     m_outputTree->Branch("nVtxReconstructable", &m_nVtxReconstructable);
     m_outputTree->Branch("timeMS", &m_timeMS);
+    m_outputTree->Branch("track_vtx_time",&m_track_vtx_time);
+    m_outputTree->Branch("track_vtx_indices",&m_track_vtx_indices);
   }
 }
 
@@ -409,8 +411,20 @@ ActsExamples::ProcessCode ActsExamples::VertexPerformanceWriter::writeT(
         }
       }
     }
-  }  // end loop vertices
 
+  }  // end loop vertices
+    /***********Getting vtx time***************/
+
+    for(int ivx=0; ivx<m_nrecoVtx;ivx++){
+
+      auto& trks = (vertices.at(ivx)).tracks();
+      for (auto& trk: trks){
+	m_track_vtx_indices.push_back(ivx);
+	Acts::BoundTrackParameters track_params = *(trk.originalParams);
+	m_track_vtx_time.push_back(track_params.time());
+      }
+    }
+    /***************************/
   // Retrieve and set reconstruction time
   if (!m_cfg.inputTime.empty()) {
     const auto& reconstructionTimeMS = m_inputTime(ctx);
@@ -418,7 +432,7 @@ ActsExamples::ProcessCode ActsExamples::VertexPerformanceWriter::writeT(
   } else {
     m_timeMS = -1;
   }
-
+  
   // fill the variables
   m_outputTree->Fill();
 
@@ -441,6 +455,7 @@ ActsExamples::ProcessCode ActsExamples::VertexPerformanceWriter::writeT(
   m_covXZ.clear();
   m_covYZ.clear();
   m_trackVtxMatchFraction.clear();
-
+  m_track_vtx_time.clear();
+  m_track_vtx_indices.clear();
   return ProcessCode::SUCCESS;
 }
