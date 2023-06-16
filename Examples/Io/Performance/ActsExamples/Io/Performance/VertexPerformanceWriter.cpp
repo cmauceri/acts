@@ -123,7 +123,6 @@ ActsExamples::VertexPerformanceWriter::VertexPerformanceWriter(
     m_outputTree->Branch("nTrueVtx", &m_nTrueVtx);
     m_outputTree->Branch("nVtxDetectorAcceptance", &m_nVtxDetAcceptance);
     m_outputTree->Branch("nVtxReconstructable", &m_nVtxReconstructable);
-    m_outputTree->Branch("timeMS", &m_timeMS);
     m_outputTree->Branch("track_vtx_time",&m_track_vtx_time);
     m_outputTree->Branch("track_vtx_indices",&m_track_vtx_indices);
   }
@@ -464,7 +463,7 @@ ActsExamples::ProcessCode ActsExamples::VertexPerformanceWriter::writeT(
   }  // end loop vertices
     /***********Getting vtx time***************/
 
-    for(int ivx=0; ivx<m_nrecoVtx;ivx++){
+    for(int ivx=0; ivx<m_nRecoVtx;ivx++){
 
       auto& trks = (vertices.at(ivx)).tracks();
       for (auto& trk: trks){
@@ -473,15 +472,7 @@ ActsExamples::ProcessCode ActsExamples::VertexPerformanceWriter::writeT(
 	m_track_vtx_time.push_back(track_params.time());
       }
     }
-    /***************************/
-  // Retrieve and set reconstruction time
-  if (!m_cfg.inputTime.empty()) {
-    const auto& reconstructionTimeMS = m_inputTime(ctx);
-    m_timeMS = reconstructionTimeMS;
-  } else {
-    m_timeMS = -1;
-  }
-  
+    
   // fill the variables
   m_outputTree->Fill();
 
