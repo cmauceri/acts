@@ -1419,6 +1419,20 @@ def addAmbiguityResolutionMLDBScan(
 
     return s
 
+def addPVfinder(
+        s,
+        inputVertices = "fittedVertices",
+        logLevel: Optional[acts.logging.Level] = None,
+):
+    customLogLevel = acts.examples.defaultLogging(s, logLevel)
+    pvfinder = acts.examples.PrimaryVertexFinderAlgorithm(
+    level=customLogLevel(),
+    inputVertices=inputVertices,
+    )
+    s.addAlgorithm(pvfinder)
+    return s
+
+
 
 @acts.examples.NamedTypeArgs(
     trackSelectorConfig=TrackSelectorConfig,
@@ -1550,4 +1564,9 @@ def addVertexFitting(
             )
         )
 
+
     return s
+    
+
+
+    

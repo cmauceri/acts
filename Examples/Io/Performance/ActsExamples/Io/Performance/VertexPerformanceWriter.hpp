@@ -138,6 +138,9 @@ class VertexPerformanceWriter final
   std::vector<int> m_nTracksOnRecoVertex;
 
   std::vector<float> m_trackVtxMatchFraction;
+  //vertex time?
+  std::vector<double> m_track_vtx_time;  
+  std::vector<double> m_track_vtx_indices;
 
   /// Number of reconstructed vertices
   int m_nRecoVtx = -1;
